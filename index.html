@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грибной Лес | Играть</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🍄 ГРИБНОЙ ЛЕС 🍄</h1>
+            <p class="subtitle">2D выживание — играй прямо в браузере!</p>
+            <nav>
+                <a href="index.html" class="active">Главная</a>
+                <a href="about.html">Об игре</a>
+                <a href="gallery.html">Галерея</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="game-wrapper">
+            <div class="game-container">
+                <canvas id="gameCanvas" width="800" height="400"></canvas>
+                
+                <div class="game-ui-overlay">
+                    <div class="hp-display">
+                        <span class="hp-label">❤️ ЗДОРОВЬЕ</span>
+                        <div class="hp-icons" id="hpIcons"></div>
+                    </div>
+                    <div class="day-display" id="dayDisplay">
+                        ДЕНЬ 1
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="controls-info">
+                    <h3>🎮 Управление:</h3>
+                    <div class="keys">
+                        <span class="key">← →</span> — движение
+                        <span class="key">ПРОБЕЛ</span> — прыжок
+                    </div>
+                </div>
+                <div class="game-buttons">
+                    <button class="game-btn restart-btn" id="restartBtn">🔄 ЗАНОВО</button>
+                </div>
+            </div>
+
+            <div class="game-hint">
+                <p>🍄 Прыгай на грибы сверху, чтобы убить их! Мир бесконечен — исследуй!</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>🍄 2026 Грибной Лес | 2D игра на выживание | Все права защищены</p>
+        <p class="small">Бесконечный мир с движущимися платформами</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

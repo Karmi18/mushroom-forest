@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грибной Лес | Об игре</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🍄 ГРИБНОЙ ЛЕС 🍄</h1>
+            <p class="subtitle">2D выживание — бесконечный мир!</p>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="about.html" class="active">Об игре</a>
+                <a href="gallery.html">Галерея</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="about-content">
+            <h2>🌲 О ГРИБНОМ ЛЕСЕ</h2>
+            
+            <p style="margin-bottom: 30px; line-height: 1.8;">
+                <strong>Грибной Лес</strong> — это атмосферный 2D платформер на выживание. 
+                Исследуй бесконечный таинственный лес, сражайся с грибами-монстрами 
+                и старайся продержаться как можно дольше! Каждый гриб уникален и опасен по-своему.
+            </p>
+
+            <h3>🍄 МОНСТРЫ-ГРИБЫ</h3>
+            <div class="monster-grid">
+                <!-- КРАСНЫЙ -->
+                <div class="monster-card">
+                    <div class="mushroom-icon red"></div>
+                    <h4>Красный шляпник</h4>
+                    <p>Самый агрессивный. Двигается взад-вперед. Убить можно только прыжком на шапку. Ярко-красный цвет предупреждает об опасности.</p>
+                </div>
+
+                <!-- ФИОЛЕТОВЫЙ -->
+                <div class="monster-card">
+                    <div class="mushroom-icon purple"></div>
+                    <h4>Фиолетовый поган</h4>
+                    <p>Медленный, но коварный. При атаке оставляет ядовитый след, который светится. Любит прятаться на платформах.</p>
+                </div>
+
+                <!-- РОЗОВЫЙ (ВЗРЫВНОЙ) -->
+                <div class="monster-card">
+                    <div class="mushroom-icon pink"></div>
+                    <h4>Розовый трутовик</h4>
+                    <p>Самый опасный! Если подойти слишком близко — взрывается! Маскируется под обычный гриб.</p>
+                </div>
+
+                <!-- БОРОВИК (ОБЫЧНЫЙ) -->
+                <div class="monster-card">
+                    <div class="mushroom-icon pink"></div>
+                    <h4>Боровик</h4>
+                    <p>Обычный гриб. Выглядит точно так же, как Розовый трутовик, но абсолютно безвреден. Сможешь отличить?</p>
+                </div>
+            </div>
+
+            <h3>⚔️ МЕХАНИКИ</h3>
+            <ul class="features-list">
+                <li><strong>❤️ Здоровье</strong> — 5 сердец. Теряешь при касании опасных грибов</li>
+                <li><strong>📅 Дни</strong> — 1 день = 2 минуты реального времени</li>
+                <li><strong>🍄 Убийство</strong> — прыгай на шляпку сверху</li>
+                <li><strong>🌍 Бесконечный мир</strong> — иди вправо, мир генерируется сам</li>
+                <li><strong>💜 Ядовитый след</strong> — фиолетовые грибы оставляют светящиеся лужи</li>
+                <li><strong>💥 Взрывы</strong> — розовые грибы взрываются, если подойти близко</li>
+            </ul>
+
+            <!-- ФОРМА ОТЗЫВА -->
+            <div class="review-section">
+                <h3>💬 ОСТАВИТЬ ОТЗЫВ</h3>
+                
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" placeholder="Как тебя зовут?" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="tvoya@pochta.ru" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review">Отзыв</label>
+                        <textarea id="review" rows="5" placeholder="Понравилась игра? Сколько дней продержался?" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">🍄 ОТПРАВИТЬ</button>
+                </form>
+
+                <div class="reviews-container" id="reviewsContainer">
+                    <p class="no-reviews">Пока нет отзывов. Будь первым!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>🍄 2026 Грибной Лес | Бесконечное выживание</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
