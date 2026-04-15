@@ -1,6 +1,5 @@
 // ============================================
-// ГРИБНОЙ ЛЕС - ИДЕАЛЬНАЯ ВЕРСИЯ
-// Фиолетовые грибы ТОЛЬКО на некоторых платформах
+// ГРИБНОЙ ЛЕС 
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -203,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // ========================================
-    // ДВИЖЕНИЕ (КАМЕРА ТОЧНО СЛЕДУЕТ)
+    // ДВИЖЕНИЕ 
     // ========================================
     
     function movePlayer() {
@@ -219,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Камера ТОЧНО следует за игроком (без отставания!)
+        // Камера ТОЧНО следует за игроком 
         cameraOffset = player.x - 300;
         if (cameraOffset < 0) cameraOffset = 0;
     }
@@ -624,8 +623,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Идеальная версия запущена!');
     
 });
+
 // ========================================
-// ФОРМА ОТЗЫВА - СОХРАНЕНИЕ В localStorage
+// ФОРМА ОТЗЫВА 
 // ========================================
 
 const reviewForm = document.getElementById('reviewForm');
@@ -640,13 +640,24 @@ function createReviewElement(name, email, text) {
     const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     
     div.innerHTML = `
-        <strong>${name}</strong>
-        <p style="color: var(--soft-pink); font-size: 0.85em; margin: 5px 0;">✉️ ${email}</p>
-        <p style="margin: 10px 0;">${text}</p>
+        <strong>${escapeHtml(name)}</strong>
+        <p style="color: var(--soft-pink); font-size: 0.85em; margin: 5px 0;">✉️ ${escapeHtml(email)}</p>
+        <p style="margin: 10px 0;">${escapeHtml(text)}</p>
         <div class="review-date" style="color: var(--soft-pink); font-size: 0.75em;">📅 ${dateStr} в ${timeStr}</div>
     `;
     
     return div;
+}
+
+// Функция для защиты от XSS-атак 
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // Загружаем сохраненные отзывы при запуске
@@ -659,7 +670,6 @@ if (reviewsContainer) {
             
             reviews.forEach(review => {
                 const reviewEl = createReviewElement(review.name, review.email, review.text);
-                // Добавляем сохраненную дату, если есть
                 if (review.date) {
                     const dateEl = reviewEl.querySelector('.review-date');
                     const date = new Date(review.date);
@@ -673,7 +683,7 @@ if (reviewsContainer) {
     }
 }
 
-// Обработка отправки формы
+// ОСНОВНОЙ ОБРАБОТЧИК С JS-ВАЛИДАЦИЕЙ 
 if (reviewForm && reviewsContainer) {
     reviewForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -686,50 +696,84 @@ if (reviewForm && reviewsContainer) {
         const email = emailInput?.value.trim();
         const text = reviewInput?.value.trim();
         
-        if (name && email && text) {
-            // Показываем уведомление
-            alert(`✨ Спасибо, ${name}! Твой отзыв сохранен.`);
-            
-            // Удаляем заглушку "Пока нет отзывов"
-            if (reviewsContainer.children.length === 1 && 
-                reviewsContainer.children[0].classList.contains('no-reviews')) {
-                reviewsContainer.innerHTML = '';
-            }
-            
-            // Создаем элемент отзыва
-            const reviewEl = createReviewElement(name, email, text);
-            reviewsContainer.prepend(reviewEl);
-            
-            // Сохраняем в localStorage
-            let reviews = [];
-            const saved = localStorage.getItem('mushroomForestReviews');
-            if (saved) {
-                reviews = JSON.parse(saved);
-            }
-            
-            // Добавляем новый отзыв в начало
-            reviews.unshift({
-                name: name,
-                email: email,
-                text: text,
-                date: new Date().toISOString()
-            });
-            
-            // Ограничиваем количество сохраняемых отзывов (последние 20)
-            if (reviews.length > 20) {
-                reviews = reviews.slice(0, 20);
-            }
-            
-            // Сохраняем обратно
-            localStorage.setItem('mushroomForestReviews', JSON.stringify(reviews));
-            
-            // Очищаем форму
-            nameInput.value = '';
-            emailInput.value = '';
-            reviewInput.value = '';
-            
-        } else {
-            alert('❌ Пожалуйста, заполните все поля!');
+        // JS-ВАЛИДАЦИЯ  
+        let errors = [];
+        
+        // 1. Валидация имени
+        if (!name) {
+            errors.push('Введите имя');
+        } else if (name.length < 2) {
+            errors.push('Имя должно содержать минимум 2 символа');
+        } else if (name.length > 50) {
+            errors.push('Имя не должно превышать 50 символов');
+        } else if (!/^[а-яА-Яa-zA-ZёЁ\s-]+$/.test(name)) {
+            errors.push('Имя может содержать только буквы, пробелы и дефисы');
         }
+        
+        // 2. Валидация email
+        const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        if (!email) {
+            errors.push('Введите email');
+        } else if (!emailRegex.test(email)) {
+            errors.push('Введите корректный email (например: name@domain.com)');
+        }
+        
+        // 3. Валидация текста отзыва
+        if (!text) {
+            errors.push('Напишите текст отзыва');
+        } else if (text.length < 10) {
+            errors.push('Текст отзыва должен содержать минимум 10 символов');
+        } else if (text.length > 500) {
+            errors.push('Текст отзыва не должен превышать 500 символов');
+        } else if (text.trim().length === 0) {
+            errors.push('Текст отзыва не может состоять только из пробелов');
+        }
+        
+        // Если есть ошибки - показываем и ПРЕРЫВАЕМ отправку
+        if (errors.length > 0) {
+            alert('❌ Ошибки:\n\n• ' + errors.join('\n• '));
+            return; // ← форма НЕ отправляется!
+        }
+        
+        // Сохраняем отзыв 
+        alert(`✨ Спасибо, ${name}! Твой отзыв сохранен.`);
+        
+        // Удаляем заглушку "Пока нет отзывов"
+        if (reviewsContainer.children.length === 1 && 
+            reviewsContainer.children[0].classList?.contains('no-reviews')) {
+            reviewsContainer.innerHTML = '';
+        }
+        
+        // Создаем элемент отзыва
+        const reviewEl = createReviewElement(name, email, text);
+        reviewsContainer.prepend(reviewEl);
+        
+        // Сохраняем в localStorage
+        let reviews = [];
+        const saved = localStorage.getItem('mushroomForestReviews');
+        if (saved) {
+            reviews = JSON.parse(saved);
+        }
+        
+        // Добавляем новый отзыв в начало
+        reviews.unshift({
+            name: name,
+            email: email,
+            text: text,
+            date: new Date().toISOString()
+        });
+        
+        // Ограничиваем количество сохраняемых отзывов (последние 20)
+        if (reviews.length > 20) {
+            reviews = reviews.slice(0, 20);
+        }
+        
+        // Сохраняем обратно
+        localStorage.setItem('mushroomForestReviews', JSON.stringify(reviews));
+        
+        // Очищаем форму
+        nameInput.value = '';
+        emailInput.value = '';
+        reviewInput.value = '';
     });
 }
